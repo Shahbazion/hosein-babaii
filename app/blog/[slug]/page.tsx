@@ -4,13 +4,15 @@ import { posts } from "../posts";
 import Reactions from "../../../components/Reactions";
 import ScrollProgress from "../../../components/ScrollProgress";
 import TableOfContents from "../../../components/TableOfContents";
+import React from "react";
 
 /* ================================
    PARSE ARTICLE CONTENT (Highlight.js)
 ================================ */
 function renderContent(raw: string) {
   const lines = raw.split("\n");
-  const blocks: JSX.Element[] = [];
+  const blocks: React.ReactNode[] = [];
+
 
   let inCode = false;
   let lang = "ts";
