@@ -1,4 +1,3 @@
-// app/blog/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "../posts";
@@ -6,16 +5,6 @@ import Reactions from "../../../components/Reactions";
 import ScrollProgress from "../../../components/ScrollProgress";
 import TableOfContents from "../../../components/TableOfContents";
 import React from "react";
-import type { Metadata } from "next";
-
-/* ================================
-   Props Type
-================================ */
-type BlogPageProps = {
-  params: {
-    slug: string;
-  };
-};
 
 /* ================================
    PARSE ARTICLE CONTENT (Highlight.js)
@@ -63,9 +52,8 @@ function renderContent(raw: string) {
 
 /* ================================
    METADATA (SERVER COMPONENT)
-   — صریحاً Promise<Metadata>
 ================================ */
-export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
@@ -92,15 +80,15 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       images: [post.image],
     },
     alternates: {
-      canonical: `https://hoseinbabaii.ir/blog/${post.slug}`,
+      canonical: `https://your-domain.com/blog/${post.slug}`,
     },
   };
 }
 
 /* ================================
-   PAGE COMPONENT (SERVER)
+   PAGE COMPONENT
 ================================ */
-export default async function BlogPostPage({ params }: BlogPageProps) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
@@ -118,6 +106,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] fade-in">
+
       <ScrollProgress />
 
       <div
@@ -173,9 +162,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 بلاگ
               </Link>
               <span>/</span>
-              <span className="text-[var(--text)] truncate max-w-[60%]">
-                {post.title}
-              </span>
+              <span className="text-[var(--text)] truncate max-w-[60%]">{post.title}</span>
             </nav>
 
             <div
@@ -197,9 +184,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             <div className="mb-10">
               <div className="flex items-center gap-2 mb-3">
                 <img src={post.icon} alt="icon" className="w-6 h-6" />
-                <span className="text-sm text-[var(--text-muted)]">
-                  {post.category}
-                </span>
+                <span className="text-sm text-[var(--text-muted)]">{post.category}</span>
               </div>
 
               <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">
@@ -230,9 +215,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
             {relatedPosts.length > 0 && (
               <div className="mt-16">
-                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">
-                  پست‌های مرتبط
-                </h2>
+                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">پست‌های مرتبط</h2>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {relatedPosts.map((item, index) => (
@@ -248,9 +231,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       "
                     >
                       <img src={item.icon} alt="icon" className="w-7 h-7" />
-                      <span className="text-sm font-medium text-[var(--text)]">
-                        {item.title}
-                      </span>
+                      <span className="text-sm font-medium text-[var(--text)]">{item.title}</span>
                     </Link>
                   ))}
                 </div>
