@@ -7,11 +7,15 @@ export const metadata = {
     "نوشته‌هایی درباره طراحی وب، توسعه، تجربه کاربری، معنویت، فلسفه و رشد فردی. ترکیبی از تکنولوژی و معنا.",
 };
 
-export default function BlogPage({
-  searchParams,
-}: {
-  searchParams?: { q?: string; category?: string };
-}) {
+// 👇 این تنها بخش مهمه: تعریف type درست برای searchParams
+interface BlogPageProps {
+  searchParams?: {
+    q?: string;
+    category?: string;
+  };
+}
+
+export default function BlogPage({ searchParams }: BlogPageProps) {
   const categories = [
     {
       title: "طراحی وب",
@@ -111,7 +115,7 @@ export default function BlogPage({
             </p>
           )}
 
-          {filteredPosts.map((post, index) => (
+          {filteredPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
