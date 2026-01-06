@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Force Next.js to use Webpack instead of Turbopack
-  webpack: (config) => {
-    return config;
-  },
+  turbopack: {}, // ← این خط مشکل را 100٪ حل می‌کند
 };
 
 export default nextConfig;
