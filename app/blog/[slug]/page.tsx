@@ -1,3 +1,4 @@
+// app/blog/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "../posts";
@@ -5,6 +6,16 @@ import Reactions from "../../../components/Reactions";
 import ScrollProgress from "../../../components/ScrollProgress";
 import TableOfContents from "../../../components/TableOfContents";
 import React from "react";
+import type { Metadata } from "next";
+
+/* ================================
+   Props Type
+================================ */
+type BlogPageProps = {
+  params: {
+    slug: string;
+  };
+};
 
 /* ================================
    PARSE ARTICLE CONTENT (Highlight.js)
@@ -52,12 +63,9 @@ function renderContent(raw: string) {
 
 /* ================================
    METADATA (SERVER COMPONENT)
+   — صریحاً Promise<Metadata>
 ================================ */
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
@@ -84,19 +92,15 @@ export async function generateMetadata({
       images: [post.image],
     },
     alternates: {
-      canonical: `https://your-domain.com/blog/${post.slug}`,
+      canonical: `https://hoseinbabaii.ir/blog/${post.slug}`,
     },
   };
 }
 
 /* ================================
-   PAGE COMPONENT
+   PAGE COMPONENT (SERVER)
 ================================ */
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function BlogPostPage({ params }: BlogPageProps) {
   const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
