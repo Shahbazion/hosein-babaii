@@ -13,7 +13,6 @@ function renderContent(raw: string) {
   const lines = raw.split("\n");
   const blocks: React.ReactNode[] = [];
 
-
   let inCode = false;
   let lang = "ts";
   let buffer: string[] = [];
@@ -21,7 +20,6 @@ function renderContent(raw: string) {
   lines.forEach((line, i) => {
     const trimmed = line.trim();
 
-    // شروع بلاک کد
     if (trimmed.startsWith("```") && !inCode) {
       inCode = true;
       lang = trimmed.replace(/```/g, "").trim() || "ts";
@@ -29,7 +27,6 @@ function renderContent(raw: string) {
       return;
     }
 
-    // پایان بلاک کد
     if (trimmed.startsWith("```") && inCode) {
       inCode = false;
       blocks.push(
@@ -40,13 +37,11 @@ function renderContent(raw: string) {
       return;
     }
 
-    // داخل بلاک کد
     if (inCode) {
       buffer.push(line);
       return;
     }
 
-    // پاراگراف معمولی
     if (trimmed) {
       blocks.push(<p key={`p-${i}`}>{trimmed}</p>);
     }
@@ -58,8 +53,12 @@ function renderContent(raw: string) {
 /* ================================
    METADATA (SERVER COMPONENT)
 ================================ */
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
@@ -93,8 +92,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 /* ================================
    PAGE COMPONENT
 ================================ */
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function BlogPostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { slug } = params;
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
@@ -111,11 +114,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] fade-in">
-
-      {/* Scroll Progress */}
       <ScrollProgress />
 
-      {/* Luxury Gradient Background */}
       <div
         className="
           absolute inset-0 pointer-events-none
@@ -131,14 +131,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       />
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-
-        {/* Layout: Article + TOC */}
         <div className="grid lg:grid-cols-[1fr_260px] gap-12">
-
-          {/* LEFT SIDE — ARTICLE */}
           <div>
-
-            {/* Back Button */}
             <Link
               href="/blog"
               className="
@@ -159,7 +153,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <span className="text-sm font-medium">بازگشت</span>
             </Link>
 
-            {/* Breadcrumb */}
             <nav
               className="
                 text-sm mb-6 flex gap-1 items-center
@@ -176,10 +169,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 بلاگ
               </Link>
               <span>/</span>
-              <span className="text-[var(--text)] truncate max-w-[60%]">{post.title}</span>
+              <span className="text-[var(--text)] truncate max-w-[60%]">
+                {post.title}
+              </span>
             </nav>
 
-            {/* Header Image */}
             <div
               className="
                 rounded-2xl overflow-hidden shadow-xl mb-10
@@ -196,11 +190,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               />
             </div>
 
-            {/* Title + Meta */}
             <div className="mb-10">
               <div className="flex items-center gap-2 mb-3">
                 <img src={post.icon} alt="icon" className="w-6 h-6" />
-                <span className="text-sm text-[var(--text-muted)]">{post.category}</span>
+                <span className="text-sm text-[var(--text-muted)]">
+                  {post.category}
+                </span>
               </div>
 
               <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">
@@ -213,10 +208,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </div>
             </div>
 
-            {/* Reactions */}
             <Reactions slug={post.slug} />
 
-            {/* Article Content */}
             <article
               className="
                 prose prose-lg max-w-none mb-16
@@ -231,10 +224,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {renderContent(post.content)}
             </article>
 
-            {/* Related Posts */}
             {relatedPosts.length > 0 && (
               <div className="mt-16">
-                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">پست‌های مرتبط</h2>
+                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">
+                  پست‌های مرتبط
+                </h2>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {relatedPosts.map((item, index) => (
@@ -250,14 +244,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       "
                     >
                       <img src={item.icon} alt="icon" className="w-7 h-7" />
-                      <span className="text-sm font-medium text-[var(--text)]">{item.title}</span>
+                      <span className="text-sm font-medium text-[var(--text)]">
+                        {item.title}
+                      </span>
                     </Link>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Comments */}
             <div className="mt-16 border-t border-[var(--border)] pt-10">
               <h2 className="text-lg font-semibold mb-4 text-[var(--text)]">
                 نظر شما درباره این نوشته چیه؟
@@ -286,7 +281,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </button>
             </div>
 
-            {/* CTA */}
             <div className="mt-16 text-center">
               <Link
                 href="/contact"
@@ -301,7 +295,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
 
-          {/* RIGHT SIDE — TABLE OF CONTENTS */}
           <TableOfContents />
         </div>
       </div>
