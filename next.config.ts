@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: false, // Disable Turbopack for Vercel
+  // Force Next.js to use Webpack instead of Turbopack
+  webpack: (config) => {
+    return config;
   },
 };
 
