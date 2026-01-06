@@ -1,3 +1,4 @@
+// app/blog/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "../posts";
@@ -5,9 +6,10 @@ import Reactions from "../../../components/Reactions";
 import ScrollProgress from "../../../components/ScrollProgress";
 import TableOfContents from "../../../components/TableOfContents";
 import React from "react";
+import type { Metadata } from "next";
 
 /* ================================
-   PARSE ARTICLE CONTENT (Highlight.js)
+   PARSE ARTICLE CONTENT
 ================================ */
 function renderContent(raw: string) {
   const lines = raw.split("\n");
@@ -51,10 +53,12 @@ function renderContent(raw: string) {
 }
 
 /* ================================
-   METADATA (SERVER COMPONENT)
+   generateMetadata — param is Promise, await it
 ================================ */
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function generateMetadata(
+  props: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await props.params;
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
@@ -80,16 +84,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       images: [post.image],
     },
     alternates: {
-      canonical: `https://your-domain.com/blog/${post.slug}`,
+      canonical: `https://hoseinbabaii.ir/blog/${post.slug}`,
     },
   };
 }
 
 /* ================================
-   PAGE COMPONENT
+   Page Component — props.params is Promise, await it
+   NOTE: don't destructure params in the parameter list
 ================================ */
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function BlogPostPage(
+  props: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await props.params;
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
@@ -106,7 +113,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] fade-in">
-
       <ScrollProgress />
 
       <div
@@ -128,15 +134,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div>
             <Link
               href="/blog"
-              className="
-                inline-flex items-center gap-2 mb-6
-                px-4 py-2 rounded-lg
-                backdrop-blur-xl bg-[var(--bg-elevated)]/60
-                border border-[var(--border)]
-                text-[var(--text)]
-                shadow-sm hover:shadow-md hover:scale-[1.02]
-                transition-all duration-300
-              "
+              className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-lg backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] text-[var(--text)] shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
             >
               <img
                 src="https://cdn-icons-png.flaticon.com/512/271/271220.png"
@@ -146,14 +144,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <span className="text-sm font-medium">بازگشت</span>
             </Link>
 
-            <nav
-              className="
-                text-sm mb-6 flex gap-1 items-center
-                backdrop-blur-xl bg-[var(--bg-elevated)]/60
-                border border-[var(--border)]
-                px-4 py-2 rounded-lg shadow-sm
-              "
-            >
+            <nav className="text-sm mb-6 flex gap-1 items-center backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] px-4 py-2 rounded-lg shadow-sm">
               <Link href="/" className="hover:text-[var(--text)] text-[var(--text-muted)]">
                 خانه
               </Link>
@@ -165,20 +156,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <span className="text-[var(--text)] truncate max-w-[60%]">{post.title}</span>
             </nav>
 
-            <div
-              className="
-                rounded-2xl overflow-hidden shadow-xl mb-10
-                backdrop-blur-xl bg-[var(--bg-elevated)]/60
-                border border-[var(--border)]
-              "
-            >
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={1200}
-                height={700}
-                className="object-cover w-full h-full"
-              />
+            <div className="rounded-2xl overflow-hidden shadow-xl mb-10 backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)]">
+              <Image src={post.image} alt={post.title} width={1200} height={700} className="object-cover w-full h-full" />
             </div>
 
             <div className="mb-10">
@@ -187,9 +166,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <span className="text-sm text-[var(--text-muted)]">{post.category}</span>
               </div>
 
-              <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">
-                {post.title}
-              </h1>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">{post.title}</h1>
 
               <div className="flex items-center gap-6 text-sm text-[var(--text-muted)]">
                 <span>{post.date}</span>
@@ -199,37 +176,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             <Reactions slug={post.slug} />
 
-            <article
-              className="
-                prose prose-lg max-w-none mb-16
-                prose-headings:text-[var(--text)]
-                prose-p:text-[var(--text-muted)]
-                prose-strong:text-[var(--text)]
-                prose-a:text-[var(--brand)]
-                prose-img:rounded-xl
-                dark:prose-invert
-              "
-            >
+            <article className="prose prose-lg max-w-none mb-16 prose-headings:text-[var(--text)] prose-p:text-[var(--text-muted)] prose-strong:text-[var(--text)] prose-a:text-[var(--brand)] prose-img:rounded-xl dark:prose-invert">
               {renderContent(post.content)}
             </article>
 
             {relatedPosts.length > 0 && (
               <div className="mt-16">
                 <h2 className="text-xl font-bold mb-6 text-[var(--text)]">پست‌های مرتبط</h2>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   {relatedPosts.map((item, index) => (
-                    <Link
-                      key={index}
-                      href={`/blog/${item.slug}`}
-                      className="
-                        p-5 rounded-xl flex items-center gap-3
-                        backdrop-blur-xl bg-[var(--bg-elevated)]/60
-                        border border-[var(--border)]
-                        shadow-md hover:shadow-xl hover:scale-[1.02]
-                        transition-all duration-300
-                      "
-                    >
+                    <Link key={index} href={`/blog/${item.slug}`} className="p-5 rounded-xl flex items-center gap-3 backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                       <img src={item.icon} alt="icon" className="w-7 h-7" />
                       <span className="text-sm font-medium text-[var(--text)]">{item.title}</span>
                     </Link>
@@ -239,44 +195,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             )}
 
             <div className="mt-16 border-t border-[var(--border)] pt-10">
-              <h2 className="text-lg font-semibold mb-4 text-[var(--text)]">
-                نظر شما درباره این نوشته چیه؟
-              </h2>
-
-              <textarea
-                className="
-                  w-full px-4 py-3 text-sm mb-4 rounded-lg
-                  border border-[var(--border)]
-                  bg-[var(--bg-elevated)]
-                  text-[var(--text)]
-                  focus:outline-none focus:ring-2 focus:ring-[var(--brand)]
-                "
-                placeholder="نظرت رو اینجا بنویس..."
-                rows={4}
-              />
-
-              <button
-                className="
-                  px-6 py-2 rounded-lg
-                  bg-[var(--brand)] text-white text-sm font-medium
-                  hover:bg-[var(--brand-hover)] transition
-                "
-              >
-                ثبت نظر (غیرفعال)
-              </button>
+              <h2 className="text-lg font-semibold mb-4 text-[var(--text)]">نظر شما درباره این نوشته چیه؟</h2>
+              <textarea className="w-full px-4 py-3 text-sm mb-4 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]" placeholder="نظرت رو اینجا بنویس..." rows={4} />
+              <button className="px-6 py-2 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition">ثبت نظر (غیرفعال)</button>
             </div>
 
             <div className="mt-16 text-center">
-              <Link
-                href="/contact"
-                className="
-                  inline-block px-8 py-3 rounded-lg
-                  bg-[var(--brand)] text-white text-sm font-medium
-                  hover:bg-[var(--brand-hover)] transition
-                "
-              >
-                نیاز به مشاوره یا همکاری داری؟
-              </Link>
+              <Link href="/contact" className="inline-block px-8 py-3 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition">نیاز به مشاوره یا همکاری داری؟</Link>
             </div>
           </div>
 
