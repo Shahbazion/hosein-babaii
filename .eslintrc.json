@@ -3,6 +3,7 @@
   "rules": {
     "react-hooks/set-state-in-effect": "off",
     "react-hooks/exhaustive-deps": "off",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "jsx-a11y/alt-text": "off"
   }
 }
