@@ -35,7 +35,6 @@ export default function PortfolioPage() {
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] transition">
-
       {/* Luxury Gradient Background */}
       <div
         className="
@@ -58,8 +57,7 @@ export default function PortfolioPage() {
           ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
         `}
       >
-
-        {/* عنوان صفحه */}
+        {/* Title */}
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-[var(--text)]">
           نمونه‌کارها
         </h1>
@@ -69,7 +67,7 @@ export default function PortfolioPage() {
           هر پروژه با توجه به نیاز مشتری، تجربه کاربری، سرعت و سئو ساخته شده است.
         </p>
 
-        {/* کارت‌های پروژه */}
+        {/* Project Cards */}
         <div className="grid md:grid-cols-3 gap-10">
           {projects.map((project, index) => (
             <div
@@ -92,11 +90,7 @@ export default function PortfolioPage() {
 
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <img
-                    src={project.icon}
-                    alt="icon"
-                    className="w-7 h-7"
-                  />
+                  <img src={project.icon} alt="icon" className="w-7 h-7" />
                   <h3 className="text-xl font-semibold text-[var(--text)]">
                     {project.title}
                   </h3>
@@ -121,7 +115,7 @@ export default function PortfolioPage() {
           ))}
         </div>
 
-        {/* CTA نهایی */}
+        {/* Final CTA */}
         <div className="mt-14 text-center">
           <a
             href="/contact"
