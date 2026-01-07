@@ -4,11 +4,4 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Test {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name      String
 }
