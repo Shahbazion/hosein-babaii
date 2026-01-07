@@ -1,12 +1,11 @@
-// app/blog/[slug]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { posts } from "../posts";
-import Reactions from "../../../components/Reactions";
-import ScrollProgress from "../../../components/ScrollProgress";
-import TableOfContents from "../../../components/TableOfContents";
-import React from "react";
+import Reactions from "@/components/Reactions";
+import ScrollProgress from "@/components/ScrollProgress";
+import TableOfContents from "@/components/TableOfContents";
 import type { Metadata } from "next";
+import React from "react";
 
 /* ================================
    PARSE ARTICLE CONTENT
@@ -53,13 +52,14 @@ function renderContent(raw: string) {
 }
 
 /* ================================
-   generateMetadata — param is Promise, await it
+   generateMetadata — FIXED
 ================================ */
-export async function generateMetadata(
-  props: { params: Promise<{ slug: string }> }
-): Promise<Metadata> {
-  const { slug } = await props.params;
-  const post = posts.find((p) => p.slug === slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const post = posts.find((p) => p.slug === params.slug);
 
   if (!post) {
     return {
@@ -90,14 +90,14 @@ export async function generateMetadata(
 }
 
 /* ================================
-   Page Component — props.params is Promise, await it
-   NOTE: don't destructure params in the parameter list
+   PAGE — FIXED (no Promise params)
 ================================ */
-export default async function BlogPostPage(
-  props: { params: Promise<{ slug: string }> }
-) {
-  const { slug } = await props.params;
-  const post = posts.find((p) => p.slug === slug);
+export default function BlogPostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = posts.find((p) => p.slug === params.slug);
 
   if (!post) {
     return (
@@ -157,7 +157,13 @@ export default async function BlogPostPage(
             </nav>
 
             <div className="rounded-2xl overflow-hidden shadow-xl mb-10 backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)]">
-              <Image src={post.image} alt={post.title} width={1200} height={700} className="object-cover w-full h-full" />
+              <Image
+                src={post.image}
+                alt={post.title}
+                width={1200}
+                height={700}
+                className="object-cover w-full h-full"
+              />
             </div>
 
             <div className="mb-10">
@@ -166,7 +172,9 @@ export default async function BlogPostPage(
                 <span className="text-sm text-[var(--text-muted)]">{post.category}</span>
               </div>
 
-              <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">{post.title}</h1>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--text)] mb-4">
+                {post.title}
+              </h1>
 
               <div className="flex items-center gap-6 text-sm text-[var(--text-muted)]">
                 <span>{post.date}</span>
@@ -182,12 +190,20 @@ export default async function BlogPostPage(
 
             {relatedPosts.length > 0 && (
               <div className="mt-16">
-                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">پست‌های مرتبط</h2>
+                <h2 className="text-xl font-bold mb-6 text-[var(--text)]">
+                  پست‌های مرتبط
+                </h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {relatedPosts.map((item, index) => (
-                    <Link key={index} href={`/blog/${item.slug}`} className="p-5 rounded-xl flex items-center gap-3 backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                    <Link
+                      key={index}
+                      href={`/blog/${item.slug}`}
+                      className="p-5 rounded-xl flex items-center gap-3 backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+                    >
                       <img src={item.icon} alt="icon" className="w-7 h-7" />
-                      <span className="text-sm font-medium text-[var(--text)]">{item.title}</span>
+                      <span className="text-sm font-medium text-[var(--text)]">
+                        {item.title}
+                      </span>
                     </Link>
                   ))}
                 </div>
@@ -195,13 +211,26 @@ export default async function BlogPostPage(
             )}
 
             <div className="mt-16 border-t border-[var(--border)] pt-10">
-              <h2 className="text-lg font-semibold mb-4 text-[var(--text)]">نظر شما درباره این نوشته چیه؟</h2>
-              <textarea className="w-full px-4 py-3 text-sm mb-4 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]" placeholder="نظرت رو اینجا بنویس..." rows={4} />
-              <button className="px-6 py-2 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition">ثبت نظر (غیرفعال)</button>
+              <h2 className="text-lg font-semibold mb-4 text-[var(--text)]">
+                نظر شما درباره این نوشته چیه؟
+              </h2>
+              <textarea
+                className="w-full px-4 py-3 text-sm mb-4 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]"
+                placeholder="نظرت رو اینجا بنویس..."
+                rows={4}
+              />
+              <button className="px-6 py-2 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition">
+                ثبت نظر (غیرفعال)
+              </button>
             </div>
 
             <div className="mt-16 text-center">
-              <Link href="/contact" className="inline-block px-8 py-3 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition">نیاز به مشاوره یا همکاری داری؟</Link>
+              <Link
+                href="/contact"
+                className="inline-block px-8 py-3 rounded-lg bg-[var(--brand)] text-white text-sm font-medium hover:bg-[var(--brand-hover)] transition"
+              >
+                نیاز به مشاوره یا همکاری داری؟
+              </Link>
             </div>
           </div>
 
