@@ -5,6 +5,7 @@ import { posts } from "./blog/posts";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://hoseinbabaii.ir";
 
+  // Static pages
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
@@ -44,12 +45,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date ?? new Date()),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+  // Dynamic blog posts
+  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => {
+    const safeDate = new Date(post.date);
+    const lastModified = isNaN(safeDate.getTime()) ? new Date() : safeDate;
+
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    };
+  });
 
   return [...staticRoutes, ...blogRoutes];
 }
