@@ -1,7 +1,7 @@
 "use client";
 
-import ContactForm from "../../components/ContactForm";
 import { useEffect, useState } from "react";
+import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   const [mounted, setMounted] = useState(false);
@@ -12,7 +12,6 @@ export default function ContactPage() {
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] transition">
-
       {/* Luxury Gradient Background */}
       <div
         className="
@@ -35,8 +34,7 @@ export default function ContactPage() {
           ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
         `}
       >
-
-        {/* عنوان صفحه */}
+        {/* Title */}
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-[var(--text)]">
           تماس با من
         </h1>
@@ -47,13 +45,12 @@ export default function ContactPage() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-10">
-
-          {/* فرم تماس */}
+          {/* Contact Form */}
           <div>
             <ContactForm />
           </div>
 
-          {/* کارت تماس */}
+          {/* Contact Card */}
           <aside
             className="
               p-8 rounded-xl
@@ -67,14 +64,9 @@ export default function ContactPage() {
             </h3>
 
             <ul className="text-[var(--text-muted)] space-y-4 text-sm">
-
-              {/* تماس تلفنی */}
+              {/* Phone */}
               <li className="flex items-center gap-3">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/724/724664.png"
-                  alt="Phone"
-                  className="w-6 h-6"
-                />
+                <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" className="w-6 h-6" />
                 <a
                   href="tel:+989199570188"
                   className="font-medium hover:text-[var(--text)] transition inline-block text-left"
@@ -84,13 +76,9 @@ export default function ContactPage() {
                 </a>
               </li>
 
-              {/* واتساپ */}
+              {/* WhatsApp */}
               <li className="flex items-center gap-3">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
-                  alt="WhatsApp"
-                  className="w-6 h-6"
-                />
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" className="w-6 h-6" />
                 <a
                   href="https://wa.me/989199570188"
                   target="_blank"
@@ -101,13 +89,9 @@ export default function ContactPage() {
                 </a>
               </li>
 
-              {/* تلگرام */}
+              {/* Telegram */}
               <li className="flex items-center gap-3">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"
-                  alt="Telegram"
-                  className="w-6 h-6"
-                />
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" className="w-6 h-6" />
                 <a
                   href="https://t.me/persianam"
                   target="_blank"
@@ -118,13 +102,9 @@ export default function ContactPage() {
                 </a>
               </li>
 
-              {/* اینستاگرام */}
+              {/* Instagram */}
               <li className="flex items-center gap-3">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-                  alt="Instagram"
-                  className="w-6 h-6"
-                />
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-6 h-6" />
                 <a
                   href="https://instagram.com/pershian_am"
                   target="_blank"
@@ -136,7 +116,7 @@ export default function ContactPage() {
               </li>
             </ul>
 
-            {/* آدرس */}
+            {/* Address */}
             <div className="mt-8 text-sm text-[var(--text-muted)] leading-relaxed">
               <span className="font-semibold text-[var(--text)]">آدرس:</span>
               <br />
