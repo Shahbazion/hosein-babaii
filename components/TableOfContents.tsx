@@ -2,23 +2,36 @@
 
 import { useEffect, useState } from "react";
 
+type TocItem = {
+  id: string;
+  text: string;
+};
+
 export default function TableOfContents() {
-  const [items, setItems] = useState<{ id: string; text: string }[]>([]);
+  const [items, setItems] = useState<TocItem[]>([]);
 
   useEffect(() => {
-    const headings = Array.from(document.querySelectorAll("article h2, article h3"));
-    const mapped = headings.map((h) => ({
-      id: h.id || h.textContent!.replace(/\s+/g, "-"),
-      text: h.textContent || "",
-    }));
+    // Select headings inside the article
+    const headings = Array.from(
+      document.querySelectorAll<HTMLHeadingElement>("article h2, article h3")
+    );
 
-    // Add IDs if missing
-    headings.forEach((h, i) => {
-      if (!h.id) h.id = mapped[i].id;
+    if (!headings.length) return;
+
+    const mapped = headings.map((h) => {
+      const text = h.textContent?.trim() || "";
+      const id = h.id || text.replace(/\s+/g, "-");
+
+      // Assign ID if missing
+      if (!h.id) h.id = id;
+
+      return { id, text };
     });
 
     setItems(mapped);
   }, []);
+
+  if (!items.length) return null;
 
   return (
     <aside
@@ -30,12 +43,17 @@ export default function TableOfContents() {
       "
     >
       <h3 className="font-semibold mb-3 text-[var(--text)]">فهرست مطالب</h3>
+
       <ul className="space-y-2 text-sm">
         {items.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className="text-[var(--text-muted)] hover:text-[var(--brand)] transition"
+              className="
+                text-[var(--text-muted)]
+                hover:text-[var(--brand)]
+                transition
+              "
             >
               {item.text}
             </a>
