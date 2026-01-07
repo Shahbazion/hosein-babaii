@@ -4,39 +4,63 @@ import { useEffect, useState } from "react";
 
 type ReactionType = "likes" | "dislikes" | "loves";
 
+type ReactionData = {
+  likes: number;
+  dislikes: number;
+  loves: number;
+};
+
 export default function Reactions({ slug }: { slug: string }) {
-  const [data, setData] = useState({ likes: 0, dislikes: 0, loves: 0 });
+  const [data, setData] = useState<ReactionData>({
+    likes: 0,
+    dislikes: 0,
+    loves: 0,
+  });
+
   const [userReaction, setUserReaction] = useState<ReactionType | null>(null);
   const [floatHearts, setFloatHearts] = useState<number[]>([]);
   const [floatEmojis, setFloatEmojis] = useState<{ id: number; emoji: string }[]>([]);
 
   const emojis = ["🔥", "😍", "👏", "🤯", "💡", "✨"];
 
-  /* ============================
-     Load initial data
-  ============================ */
+  /* ============================================================
+     1) Load initial data — API-Ready (DB later)
+  ============================================================ */
   useEffect(() => {
-    // Load counters from DB
-    fetch(`/api/reactions/${slug}`)
-      .then((r) => r.json())
-      .then((res) => setData(res || { likes: 0, dislikes: 0, loves: 0 }));
+    const load = async () => {
+      try {
+        const res = await fetch(`/api/reactions/${slug}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-    // Load user reaction from LocalStorage
+        if (res.ok) {
+          const json = await res.json();
+          setData(json);
+        }
+      } catch {
+        // fallback for no DB yet
+        setData({ likes: 0, dislikes: 0, loves: 0 });
+      }
+    };
+
+    load();
+
     const saved = localStorage.getItem(`reaction-${slug}`);
     if (saved) setUserReaction(saved as ReactionType);
   }, [slug]);
 
-  /* ============================
-     Save user reaction
-  ============================ */
+  /* ============================================================
+     2) Save user reaction locally (until DB user system exists)
+  ============================================================ */
   const saveUserReaction = (reaction: ReactionType | null) => {
     if (reaction) localStorage.setItem(`reaction-${slug}`, reaction);
     else localStorage.removeItem(`reaction-${slug}`);
   };
 
-  /* ============================
-     Floating Heart Animation
-  ============================ */
+  /* ============================================================
+     3) Floating animations
+  ============================================================ */
   const animateHeart = () => {
     const id = Date.now();
     setFloatHearts((prev) => [...prev, id]);
@@ -45,9 +69,6 @@ export default function Reactions({ slug }: { slug: string }) {
     }, 1200);
   };
 
-  /* ============================
-     Floating Emoji Animation
-  ============================ */
   const animateEmoji = () => {
     const id = Date.now();
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -57,14 +78,13 @@ export default function Reactions({ slug }: { slug: string }) {
     }, 1200);
   };
 
-  /* ============================
-     Update Reaction
-  ============================ */
-  const update = (field: ReactionType) => {
-    // Prevent double voting
+  /* ============================================================
+     4) Update Reaction — API-Ready (DB later)
+  ============================================================ */
+  const update = async (field: ReactionType) => {
     if (userReaction === field) return;
 
-    const newData = {
+    const newData: ReactionData = {
       likes: field === "likes" ? data.likes + 1 : data.likes,
       dislikes: field === "dislikes" ? data.dislikes + 1 : data.dislikes,
       loves: field === "loves" ? data.loves + 1 : data.loves,
@@ -74,10 +94,16 @@ export default function Reactions({ slug }: { slug: string }) {
     setUserReaction(field);
     saveUserReaction(field);
 
-    fetch(`/api/reactions/${slug}`, {
-      method: "POST",
-      body: JSON.stringify(newData),
-    });
+    // API call — this will automatically connect to DB later
+    try {
+      await fetch(`/api/reactions/${slug}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reaction: field }),
+      });
+    } catch {
+      // ignore for now (DB not ready)
+    }
 
     if (field === "loves") animateHeart();
     animateEmoji();
@@ -85,29 +111,22 @@ export default function Reactions({ slug }: { slug: string }) {
 
   return (
     <div className="relative">
-
-      {/* Floating Hearts */}
+      {/* Floating animations */}
       <div className="absolute inset-0 pointer-events-none">
         {floatHearts.map((id) => (
-          <div
-            key={id}
-            className="absolute left-1/2 animate-float-heart text-pink-500 text-2xl"
-          >
+          <div key={id} className="absolute left-1/2 animate-float-heart text-pink-500 text-2xl">
             ❤️
           </div>
         ))}
 
         {floatEmojis.map((item) => (
-          <div
-            key={item.id}
-            className="absolute left-1/2 animate-float-heart text-xl"
-          >
+          <div key={item.id} className="absolute left-1/2 animate-float-heart text-xl">
             {item.emoji}
           </div>
         ))}
       </div>
 
-      {/* Reaction Buttons */}
+      {/* Buttons */}
       <div
         className="
           flex items-center gap-6 mb-10
@@ -116,7 +135,6 @@ export default function Reactions({ slug }: { slug: string }) {
           px-4 py-3 rounded-xl shadow-sm
         "
       >
-        {/* Like */}
         <button
           onClick={() => update("likes")}
           className={`flex items-center gap-2 transition ${
@@ -128,7 +146,6 @@ export default function Reactions({ slug }: { slug: string }) {
           👍 <span className="text-sm">{data.likes}</span>
         </button>
 
-        {/* Dislike */}
         <button
           onClick={() => update("dislikes")}
           className={`flex items-center gap-2 transition ${
@@ -140,7 +157,6 @@ export default function Reactions({ slug }: { slug: string }) {
           👎 <span className="text-sm">{data.dislikes}</span>
         </button>
 
-        {/* Love */}
         <button
           onClick={() => update("loves")}
           className={`flex items-center gap-2 transition ${
