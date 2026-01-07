@@ -13,7 +13,6 @@ export default function AboutPage() {
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] transition">
-
       {/* Luxury Gradient Background */}
       <div
         className="
@@ -36,11 +35,9 @@ export default function AboutPage() {
           ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
         `}
       >
-
-        {/* بخش اصلی */}
+        {/* Main Section */}
         <div className="grid md:grid-cols-3 gap-10 items-center">
-
-          {/* تصویر */}
+          {/* Avatar */}
           <div className="flex justify-center md:justify-start">
             <div
               className="
@@ -61,7 +58,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* متن */}
+          {/* Text */}
           <div className="md:col-span-2">
             <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-[var(--text)]">
               حسین بابایی
@@ -118,10 +115,8 @@ export default function AboutPage() {
               </a>
             </div>
 
-            {/* اطلاعات تماس */}
+            {/* Contact Info */}
             <div className="mt-8 text-sm text-[var(--text-muted)] space-y-3">
-
-              {/* تلفن */}
               <div className="flex items-center gap-2">
                 <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" className="w-5 h-5" />
                 <a href="tel:+989199570188" className="underline font-medium" dir="ltr">
@@ -129,7 +124,6 @@ export default function AboutPage() {
                 </a>
               </div>
 
-              {/* واتساپ */}
               <div className="flex items-center gap-2">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" className="w-5 h-5" />
                 <a href="https://wa.me/989199570188" target="_blank" rel="noreferrer" className="underline font-medium">
@@ -137,7 +131,6 @@ export default function AboutPage() {
                 </a>
               </div>
 
-              {/* اینستاگرام */}
               <div className="flex items-center gap-2">
                 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-5 h-5" />
                 <a href="https://instagram.com/pershian_am" target="_blank" rel="noreferrer" className="underline font-medium">
@@ -145,7 +138,6 @@ export default function AboutPage() {
                 </a>
               </div>
 
-              {/* تلگرام */}
               <div className="flex items-center gap-2">
                 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" className="w-5 h-5" />
                 <a href="https://t.me/persianam" target="_blank" rel="noreferrer" className="underline font-medium">
@@ -156,7 +148,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* مهارت‌ها */}
+        {/* Skills */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-6 text-[var(--text)]">
             مهارت‌ها و تجربه
