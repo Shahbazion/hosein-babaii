@@ -1,6 +1,18 @@
 // app/blog/posts.ts
 
-export const posts = [
+export type BlogPost = {
+  slug: string;
+  title: string;
+  category: string;
+  icon: string;
+  image: string;
+  date: string;
+  readingTime: string;
+  excerpt: string;
+  content: string;
+};
+
+export const posts: BlogPost[] = [
   {
     slug: "professional-website",
     title: "چطور یک وب‌سایت حرفه‌ای بسازیم؟",
