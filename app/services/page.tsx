@@ -11,7 +11,6 @@ export default function ServicesPage() {
 
   return (
     <section className="relative overflow-hidden py-24 bg-[var(--bg)] transition">
-
       {/* Luxury Gradient Background */}
       <div
         className="
@@ -34,8 +33,7 @@ export default function ServicesPage() {
           ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
         `}
       >
-
-        {/* عنوان صفحه */}
+        {/* Title */}
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-[var(--text)]">
           خدمات من
         </h1>
@@ -46,30 +44,15 @@ export default function ServicesPage() {
           هر پروژه یا جلسه را با دقت، تجربه و نگاه انسانی مدیریت می‌کنم.
         </p>
 
-        {/* کارت‌های خدمات */}
+        {/* Service Cards */}
         <div className="grid md:grid-cols-3 gap-8">
-
-          {/* طراحی سایت */}
-          <div
-            className="
-              p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60
-              border border-[var(--border)]
-              shadow-xl hover:shadow-2xl hover:scale-[1.02]
-              transition-all duration-500
-            "
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png"
-              alt="Web Design"
-              className="w-12 h-12 mb-4"
-            />
-            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">
-              طراحی وب‌سایت
-            </h3>
+          {/* Web Design */}
+          <div className="p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" className="w-12 h-12 mb-4" />
+            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">طراحی وب‌سایت</h3>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">
               طراحی سایت‌های شرکتی، شخصی، فروشگاهی و برندینگ با تمرکز بر تجربه کاربری،
-              سرعت و سئو.  
-              استفاده از Next.js و Tailwind برای ساختار مدرن و قابل توسعه.
+              سرعت و سئو. استفاده از Next.js و Tailwind برای ساختار مدرن و قابل توسعه.
             </p>
             <ul className="text-sm text-[var(--text-muted)] space-y-1">
               <li>✔ طراحی UI/UX حرفه‌ای</li>
@@ -78,23 +61,10 @@ export default function ServicesPage() {
             </ul>
           </div>
 
-          {/* وب‌اپلیکیشن */}
-          <div
-            className="
-              p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60
-              border border-[var(--border)]
-              shadow-xl hover:shadow-2xl hover:scale-[1.02]
-              transition-all duration-500
-            "
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/906/906334.png"
-              alt="Web App"
-              className="w-12 h-12 mb-4"
-            />
-            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">
-              وب‌اپلیکیشن & SPA
-            </h3>
+          {/* Web App */}
+          <div className="p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500">
+            <img src="https://cdn-icons-png.flaticon.com/512/906/906334.png" className="w-12 h-12 mb-4" />
+            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">وب‌اپلیکیشن & SPA</h3>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">
               ساخت وب‌اپلیکیشن‌های سریع، امن و مقیاس‌پذیر با Next.js و APIهای استاندارد.
               مناسب استارتاپ‌ها، پنل‌های مدیریتی و سیستم‌های تعاملی.
@@ -106,26 +76,12 @@ export default function ServicesPage() {
             </ul>
           </div>
 
-          {/* سئو و سرعت */}
-          <div
-            className="
-              p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60
-              border border-[var(--border)]
-              shadow-xl hover:shadow-2xl hover:scale-[1.02]
-              transition-all duration-500
-            "
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png"
-              alt="SEO"
-              className="w-12 h-12 mb-4"
-            />
-            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">
-              سئو، سرعت و نگهداری
-            </h3>
+          {/* SEO */}
+          <div className="p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" className="w-12 h-12 mb-4" />
+            <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">سئو، سرعت و نگهداری</h3>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">
-              بهینه‌سازی Core Web Vitals، افزایش سرعت، بهبود سئو و پشتیبانی فنی
-              برای رشد بلندمدت سایت.
+              بهینه‌سازی Core Web Vitals، افزایش سرعت، بهبود سئو و پشتیبانی فنی برای رشد بلندمدت سایت.
             </p>
             <ul className="text-sm text-[var(--text-muted)] space-y-1">
               <li>✔ بهینه‌سازی تصاویر و لود</li>
@@ -134,21 +90,10 @@ export default function ServicesPage() {
             </ul>
           </div>
 
-          {/* مشاوره معنوی / فلسفی / عرفانی */}
-          <div
-            className="
-              p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60
-              border border-[var(--border)]
-              shadow-xl hover:shadow-2xl hover:scale-[1.02]
-              transition-all duration-500 md:col-span-3
-            "
-          >
+          {/* Spiritual Guidance */}
+          <div className="p-7 rounded-xl backdrop-blur-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 md:col-span-3">
             <div className="flex items-start gap-6">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/4329/4329445.png"
-                alt="Spiritual Guidance"
-                className="w-14 h-14"
-              />
+              <img src="https://cdn-icons-png.flaticon.com/512/4329/4329445.png" className="w-14 h-14" />
 
               <div>
                 <h3 className="font-semibold text-xl mb-3 text-[var(--text)]">
@@ -157,9 +102,8 @@ export default function ServicesPage() {
 
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">
                   جلسات گفت‌وگو و همراهی برای افرادی که به دنبال معنا، آرامش،
-                  شناخت خود، مسیر درونی و نگاه عمیق‌تر به زندگی هستند.  
-                  این جلسات درمان پزشکی نیستند؛ بلکه فضایی امن برای گفتگو،
-                  بینش، پرسش و رشد شخصی فراهم می‌کنند.
+                  شناخت خود و مسیر درونی هستند. این جلسات درمان پزشکی نیستند؛
+                  بلکه فضایی امن برای گفتگو و رشد شخصی فراهم می‌کنند.
                 </p>
 
                 <ul className="text-sm text-[var(--text-muted)] space-y-1">
@@ -171,10 +115,9 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* CTA نهایی */}
+        {/* Final CTA */}
         <div className="mt-14 text-center">
           <a
             href="/contact"
