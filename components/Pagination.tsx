@@ -1,79 +1,75 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
-  basePath: string; // مثال: "/blog" یا "/portfolio"
 };
 
-export default function Pagination({
-  currentPage,
-  totalPages,
-  basePath,
-}: PaginationProps) {
+export default function Pagination({ currentPage, totalPages }: PaginationProps) {
+  const router = useRouter();
+  const params = useSearchParams();
+
   if (totalPages <= 1) return null;
+
+  const goToPage = (page: number) => {
+    const query = new URLSearchParams(params.toString());
+    query.set("page", page.toString());
+    router.push(`?${query.toString()}`);
+  };
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const pageLink = (page: number) =>
-    page === 1 ? basePath : `${basePath}?page=${page}`;
-
   return (
-    <div className="flex items-center justify-center gap-2 mt-16">
+    <div className="flex items-center justify-center gap-2 mt-12">
 
       {/* Prev */}
-      <Link
-        href={currentPage > 1 ? pageLink(currentPage - 1) : "#"}
-        className={`
-          px-3 py-2 rounded-lg border border-[var(--border)]
-          bg-[var(--bg-elevated)] text-sm
-          transition
-          ${
-            currentPage === 1
-              ? "opacity-40 cursor-not-allowed"
-              : "hover:bg-[var(--bg)]"
-          }
-        `}
+      <button
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="
+          px-3 py-2 rounded-lg text-sm
+          bg-[var(--bg-elevated)]/60 border border-[var(--border)]
+          hover:bg-[var(--bg)] transition
+          disabled:opacity-40 disabled:cursor-not-allowed
+        "
       >
         قبلی
-      </Link>
+      </button>
 
       {/* Page Numbers */}
       {pages.map((page) => (
-        <Link
+        <button
           key={page}
-          href={pageLink(page)}
+          onClick={() => goToPage(page)}
           className={`
-            px-3 py-2 rounded-lg border text-sm transition
+            px-3 py-2 rounded-lg text-sm transition
+            border border-[var(--border)]
             ${
               page === currentPage
                 ? "bg-[var(--brand)] text-white border-[var(--brand)]"
-                : "bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-muted)] hover:bg-[var(--bg)]"
+                : "bg-[var(--bg-elevated)]/60 hover:bg-[var(--bg)] text-[var(--text)]"
             }
           `}
         >
           {page}
-        </Link>
+        </button>
       ))}
 
       {/* Next */}
-      <Link
-        href={currentPage < totalPages ? pageLink(currentPage + 1) : "#"}
-        className={`
-          px-3 py-2 rounded-lg border border-[var(--border)]
-          bg-[var(--bg-elevated)] text-sm
-          transition
-          ${
-            currentPage === totalPages
-              ? "opacity-40 cursor-not-allowed"
-              : "hover:bg-[var(--bg)]"
-          }
-        `}
+      <button
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="
+          px-3 py-2 rounded-lg text-sm
+          bg-[var(--bg-elevated)]/60 border border-[var(--border)]
+          hover:bg-[var(--bg)] transition
+          disabled:opacity-40 disabled:cursor-not-allowed
+        "
       >
         بعدی
-      </Link>
+      </button>
     </div>
   );
 }
